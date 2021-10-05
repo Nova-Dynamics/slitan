@@ -1,0 +1,3 @@
+[submodule "lib/atcp-client"]
+	path = lib/atcp-client
+	url = https://Zoxks@bitbucket.org/novadynamics/atcp-client.git
