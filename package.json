@@ -1,22 +1,38 @@
 {
   "name": "slitan",
   "version": "1.0.0",
-  "description": "DAX webpage server",
+  "description": "Web UI framework",
   "main": "index.js",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js | ./node_modules/.bin/bunyan",
-    "start:debug": "node server.js | ./node_modules/.bin/bunyan -o simple",
-    "build": "./build-tools/build-js.sh && ./build-tools/build-css.sh"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "slitan-build": "./build/build.js",
+    "slitan-watch": "./watch/watch.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://Zoxks@bitbucket.org/novadynamics/slitan.git"
+    "url": "git+ssh://git@bitbucket.org/novadynamics/slitan.git"
   },
-  "author": "Sean Sullivan, Jonathan V. S.",
+  "author": "Sean Sullivan",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/novadynamics/slitan#readme"
+  "bugs": {
+    "url": "https://bitbucket.org/novadynamics/slitan/issues"
+  },
+  "homepage": "https://bitbucket.org/novadynamics/slitan#readme",
+  "dependencies": {
+    "js-cookie": "^3.0.1",
+    "mustache": "^4.2.0"
+  },
+  "devDependencies": {
+    "chokidar": "^3.5.3",
+    "browserify": "^17.0.0",
+    "resolve-from": "^5.0.0",
+    "through2": "^4.0.2",
+    "yaclc": "^1.0.0",
+    "yalls": "^0.5.0"
+  }
 }
