@@ -43,12 +43,16 @@ const b = browserify({
   });
 
 
-try {
-  b.bundle().pipe(fs.createWriteStream(output_path));
-  console.log(`${f("Build complete.", {color: "green"})}`);
-  console.log(`Output files: ${f(output_directory + "bundle.js", {color: "#c2ae00"})}, ${f(output_directory + "bundle.css", {color: "#c2ae00"})}`)
-} catch (error) {
-  console.log(`${f("Build failed.", {color: "red"})}`);
-  console.log(`Error: ${error}`)
-  process.exit(1);
-}
+  b.bundle()
+  .on('error', function(err) {
+    console.log(`${f("Build failed.", {color: "red"})}`);
+    console.log(`Error: ${err}`)
+    process.exit(1);
+  })
+  .pipe(fs.createWriteStream(output_path))
+  .on('finish', function(err) {
+    console.log(`${f("Build complete.", {color: "green"})}`);
+    console.log(`Output files: ${f(output_directory + "bundle.js", {color: "#c2ae00"})}, ${f(output_directory + "bundle.css", {color: "#c2ae00"})}`)
+  })
+
+

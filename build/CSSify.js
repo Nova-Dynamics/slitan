@@ -5,16 +5,23 @@ const resolveFrom = require('resolve-from');
 class CSSify
 {
 
-    start(entrypoint)
+    start(entrypoint, max_recurse=100)
     {
-        this.checked
+
+        this.max_recurse=max_recurse;
+        this.checked = [];
         this.css_files = []
-        this.recurse_enter(entrypoint)
+        this.recurse_enter(entrypoint, 0)
 
         return this.css_files
     }
 
-    recurse_enter(file_path) {
+    recurse_enter(file_path, depth) {
+
+        if (depth>this.max_recurse)
+            return;
+
+        this.checked.push(file_path)
 
         const file = fs.readFileSync(file_path, 'utf8');
 
@@ -46,8 +53,10 @@ class CSSify
 
                 const is_local = !resolved_local_path.includes('node_modules') && fs.existsSync(resolved_local_path);
                 const is_slitan = resolved_local_path.includes('slitan');
-                if ((is_local || is_slitan) && !resolved_local_path.endsWith('.css')) {
-                    this.recurse_enter(resolved_local_path);
+                const has_checked = this.checked.includes(resolved_local_path);
+
+                if ((is_local || is_slitan) && !resolved_local_path.endsWith('.css') && !has_checked) {
+                    this.recurse_enter(resolved_local_path, depth+1);
                 }
             });
         }
