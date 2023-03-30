@@ -6,7 +6,7 @@ module.exports = function(file, options) {
   if (extension === '.css') {
     return through();
   }
-  console.log(file)
+  
   const stream = through(write, end);
   return stream;
 

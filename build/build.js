@@ -39,9 +39,14 @@ css.bundle(output_directory)
 
 const b = browserify({
     entries: [entrypoint_path],
-    transform: [css_ignore, fs_replace],
+    extensions: ["js", "json"]
   });
 
+  b.transform(css_ignore, {
+    global: true
+  });
+
+  b.transform(fs_replace);
 
   b.bundle()
   .on('error', function(err) {
