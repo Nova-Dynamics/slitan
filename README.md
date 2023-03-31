@@ -180,7 +180,7 @@ class CollapseButton extends Partial
     constructor()
     {
         //Require partial-specific html (will be bundled on build)
-        let template = fs.readFileSync("./collapse_button.html")
+        let template = slitan_bundle_resource("./collapse_button.html")
         
         super(template)
 
