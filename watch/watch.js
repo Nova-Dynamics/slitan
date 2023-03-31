@@ -49,7 +49,12 @@ function rebuild(reason)
     building = true;
 
     log.info("Starting build... ");
-    execSync(`slitan-build ${entrypoint_file} ${output_directory}`);
+    try {
+      execSync(`slitan-build ${entrypoint_file} ${output_directory}`);
+    } catch (error) {
+      log.error("ERR!");
+    }
+    
     log.info("Build finished!");
 
     building = false;
