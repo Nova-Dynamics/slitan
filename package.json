@@ -1,6 +1,6 @@
 {
   "name": "slitan",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "description": "Web UI framework",
   "main": "index.js",
   "directories": {
@@ -30,6 +30,7 @@
     "js-cookie": "^3.0.1",
     "mustache": "^4.2.0",
     "resolve-from": "^5.0.0",
+    "socket.io-client": "^4.6.1",
     "through2": "^4.0.2",
     "yaclc": "^1.0.0",
     "yalls": "^0.5.0"
