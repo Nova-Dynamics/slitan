@@ -3,7 +3,7 @@
 const path = require('path');
 const fs = require('fs');
 const chokidar = require('chokidar');
-const { execSync } = require('child_process');
+const { exec } = require('child_process');
 const { Logger } = require("yalls");
 
 let log;
@@ -49,15 +49,35 @@ function rebuild(reason)
     building = true;
 
     log.info("Starting build... ");
-    try {
-      execSync(`slitan-build ${entrypoint_file} ${output_directory}`);
-    } catch (error) {
-      log.error("ERR!");
-    }
-    
-    log.info("Build finished!");
 
-    building = false;
+    const command = `slitan-build ${entrypoint_file} ${output_directory}`;
+
+    exec(command, (error, stdout, stderr) => {
+
+      if (stdout) 
+        log.info(stdout);
+      
+        if (error) {
+            log.error("Build failed to complete!");
+        } else {
+            log.info("Build finished!");
+        }
+
+        
+        
+        building = false;
+    });
+
+    // try {
+    //   execSync(`slitan-build ${entrypoint_file} ${output_directory}`, {stdio: 'inherit'});
+    // } catch (error) {
+    //   log.error("ERR!");
+    //   log.error(error);
+    // }
+    
+    // log.info("Build finished!");
+
+    // building = false;
 
 }
 
@@ -73,4 +93,6 @@ setTimeout(()=>{
     watcher.on('add', path => rebuild(`File ${path} has been added`))
     .on('change', path => rebuild(`File ${path} has been changed`))
     .on('unlink', path => rebuild(`File ${path} has been removed`));
+
+    rebuild(`Program starting`)
 }, 1500)
