@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const path = require('path');
+const { Stream } = require('stream');
 const fs = require('fs');
 const CSSify = require("./CSSify")
 const browserify = require('browserify');
@@ -10,6 +11,7 @@ const { f } = require("yaclc");
 
 const entrypoint_file = process.argv[2];
 const output_directory = process.argv[3];
+const minify = !!process.argv[4];
 
 if (!entrypoint_file || !output_directory) {
   console.log(`${f("Build failed.", {color: "red"})}`);
@@ -37,6 +39,20 @@ css.start(entrypoint_path)
 
 css.bundle(output_directory)
 
+// Thanks to: https://github.com/GMTurbo/IdentityStream/blob/master/identityStream.js
+class IdentityStream extends Stream {
+    write(data) { this.emit("data", data); }
+    end() { this.emit("end"); }
+    destroy() { this.emit("close"); }
+}
+
+let minifyStream;
+if ( minify ) {
+    minifyStream = require("minify-stream")();
+} else {
+    minifyStream = new IdentityStream();
+}
+
 const b = browserify({
     entries: [entrypoint_path],
     extensions: ["js", "json"]
@@ -54,6 +70,7 @@ const b = browserify({
     console.log(`Error: ${err}`)
     process.exit(1);
   })
+  .pipe(minifyStream)
   .pipe(fs.createWriteStream(output_path))
   .on('finish', function(err) {
     console.log(`${f("Build complete.", {color: "green"})}`);
