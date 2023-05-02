@@ -28,6 +28,7 @@
     "chokidar": "^3.5.3",
     "jquery": "^3.6.4",
     "js-cookie": "^3.0.1",
+    "minify-stream": "^2.1.0",
     "mustache": "^4.2.0",
     "resolve-from": "^5.0.0",
     "socket.io-client": "^4.6.1",
