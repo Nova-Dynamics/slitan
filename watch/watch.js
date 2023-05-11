@@ -54,18 +54,16 @@ function rebuild(reason)
 
     exec(command, (error, stdout, stderr) => {
 
-      if (stdout) 
-        log.info(stdout);
+      if (stdout) stdout.replace(/\r/g,"").split("\n").forEach(l => { if (l) log.info(l); });
+      if (stderr) stdout.replace(/\r/g,"").split("\n").forEach(l => { if (l) log.error(l); });
       
-        if (error) {
-            log.error("Build failed to complete!");
-        } else {
-            log.info("Build finished!");
-        }
+      if (error) {
+          log.error("Build failed to complete!");
+      } else {
+          log.info("Build finished!");
+      }
 
-        
-        
-        building = false;
+      building = false;
     });
 
     // try {
