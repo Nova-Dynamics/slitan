@@ -62,9 +62,9 @@ class CSSify
         }
     }
 
-    bundle(out_dir) {
+    bundle(out_fp) {
         const css_contents = this.css_files.map(css_path => fs.readFileSync(css_path, 'utf8')).join('\n');
-        fs.writeFileSync(path.join(out_dir, 'bundle.css'), css_contents);
+        fs.writeFileSync(out_fp, css_contents);
     }
     
 }

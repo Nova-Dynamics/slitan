@@ -5,6 +5,7 @@ const fs = require('fs');
 const chokidar = require('chokidar');
 const { exec } = require('child_process');
 const { Logger } = require("yalls");
+const BuildConfiguration = require("./BuildConfiguration.js");
 
 let log;
 
@@ -14,26 +15,23 @@ let log_cb = (level, string) => console.log([string.split("|")[0], log.f(string.
 // Create a logger
 log = Logger.callback(log_cb, "", { format:"[:ISO] | :STRING" });
 
-const entrypoint_file = process.argv[2];
-const output_directory = process.argv[3];
-
-if (!entrypoint_file || !output_directory) {
-  log.error('Error: Please provide the entrypoint file and output directory.');
-  process.exit(1);
+const config_fp = path.resolve(process.argv[2] || "slitan.config.js");
+if (!fs.existsSync(config_fp)) {
+    log.error(`Error: Configuration file '${config_fp}' does not exist.`);
+    process.exit(1);
 }
 
-const entrypoint_path = path.resolve(entrypoint_file);
-const output_path = path.resolve(output_directory);
-
-if (!fs.existsSync(entrypoint_path)) {
-  log.error(`Error: Entrypoint file '${entrypoint_file}' does not exist.`);
-  process.exit(1);
+const config = BuildConfiguration.load(config_fp);
+try {
+    config.check_validity();
+} catch(e) {
+    log.error("There was an error with your configuration:");
+    log.error(e);
+    process.exit(1);
 }
 
-if (!fs.existsSync(output_directory)) {
-  log.error(`Error: Output directory '${output_directory}' does not exist.`);
-  process.exit(1);
-}
+const entrypoint_path = path.resolve(config.entrypoint);
+const output_path = path.resolve(config.output_folder);
 
 let building = false;
 
@@ -50,7 +48,7 @@ function rebuild(reason)
 
     log.info("Starting build... ");
 
-    const command = `slitan-build ${entrypoint_file} ${output_directory}`;
+    const command = `npx slitan-build`;
 
     exec(command, (error, stdout, stderr) => {
 
@@ -65,18 +63,6 @@ function rebuild(reason)
 
       building = false;
     });
-
-    // try {
-    //   execSync(`slitan-build ${entrypoint_file} ${output_directory}`, {stdio: 'inherit'});
-    // } catch (error) {
-    //   log.error("ERR!");
-    //   log.error(error);
-    // }
-    
-    // log.info("Build finished!");
-
-    // building = false;
-
 }
 
 const watcher = chokidar.watch("**", { 
