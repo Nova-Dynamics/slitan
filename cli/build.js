@@ -9,6 +9,7 @@ const browserify = require('browserify');
 const css_ignore = require("./css_ignore")
 const fs_replace = require("./fs_replace")
 const BuildConfiguration = require("./BuildConfiguration.js");
+const EnvironmentVariables = require("./EnvironmentVariables.js");
 const { f } = require("yaclc");
 
 const config_fp = path.resolve(process.argv[2] || "slitan.config.js");
@@ -27,6 +28,8 @@ try {
     process.exit(1);
 }
 
+const env = new EnvironmentVariables();
+env.load(config.env_files);
 
 // TODO : make this a configurartion option??
 const css_fp = path.join(config.output_folder, "bundle.css");
@@ -66,6 +69,7 @@ b.transform(css_ignore, {
     global: true
 });
 b.transform(fs_replace);
+b.transform(env.transformer());
 
 // Setup ignores
 if ( !config.use.jquery ) b.ignore("jquery");

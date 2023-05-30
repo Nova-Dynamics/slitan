@@ -28,6 +28,7 @@
     "browserify": "^17.0.0",
     "chokidar": "^3.5.3",
     "commander": "^10.0.1",
+    "dotenv": "^16.1.0",
     "jquery": "^3.6.4",
     "js-cookie": "^3.0.1",
     "minify-stream": "^2.1.0",

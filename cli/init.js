@@ -7,6 +7,7 @@ const { program } = require("commander");
 
 const slitan_template = {
     entrypoint: "index.js",
+    env_files: [],
     output_folder: "public",
     use: {}
 };

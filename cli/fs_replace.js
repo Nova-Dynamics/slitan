@@ -10,7 +10,6 @@ module.exports = function(file, options) {
     // const regex = /fs\.readFileSync\(["']\.(\/[^"']+)["']\)/g;
     const regex = /slitan_bundle_resource\(["']([^"']+)["']\)/g;
 
-    
     const modified_buf = buf.toString().replace(regex, function(match, filepath) {
       const resolved_filepath = path.resolve(path.join(path.dirname(file), filepath));
       return JSON.stringify(fs.readFileSync(resolved_filepath).toString());

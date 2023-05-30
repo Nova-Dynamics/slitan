@@ -8,6 +8,7 @@ class BuildConfiguration {
     constructor(build={}) {
         this.entrypoint = resolve(build?.entrypoint ?? "index.js");
         this.output_folder = resolve(build?.output_folder ?? "public");
+        this.env_files = (build?.env_files ?? []).map(fp => resolve(fp)),
         this.minify = !!(build?.minify ?? false);
         this.use = {
             jquery: !!(build?.use?.jquery ?? true),
