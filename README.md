@@ -31,11 +31,11 @@ Install slitan with npm
 
 ### Entrypoint
 
-The Index class extends EntryPoint, which is a class provided by Slitan that serves as the entry point for the web application. The Index class defines two methods: check_auth() and load().
+The Index class extends EntryPoint, which is a class provided by Slitan that serves as the entry point for the web application. The Index class defines two methods: init() and load().
 
-check_auth() is an asynchronous method that checks if the user is authenticated. In this example, the method simply returns true. In a real-world scenario, this method would likely contain authentication logic to verify the user's credentials.
+init() is an asynchronous method that allows pre-DOM-ready setup code to be run.
 
-load() is a function called to set up your environment. In this example, two pages are added: FilterPage, and CalendarPage
+load() is an asynchronous method for post-DOM-ready setup
 
 After defining the Index class, an instance of the class is created and started by calling the start() method on it. This method is provided by the EntryPoint class and sets up the html page
 
@@ -49,19 +49,17 @@ class Index extends EntryPoint
         super();
     }
 
-    async check_auth()
+    async init()
     {
-        // Check if user is authenticated
-        // ...
-        // User checks out!
-        return true;
+        // Add some pages to be rendered
+        this.add_page(require("./pages/FilterPage/FilterPage"))
+        this.add_page(require("./pages/CalendarPage/CalendarPage"))
     }
 
     async load()
     {
-        //Add some pages to be rendered
-        this.add_page(require("./pages/FilterPage/FilterPage"))
-        this.add_page(require("./pages/CalendarPage/CalendarPage"))
+        // Load the current page
+        return this.load_page(this.current_page);
     }
 }
 
@@ -86,27 +84,15 @@ require("./calendar.css")
 
 class CalendarPage extends Page
 {
+    async init() {
+        // Construct the button partial
+        this.collapse_btn_partial = CollapseButton.for_page(this);
+    }
 
-  constructor() {
-    
-    // Run this page only on when the 'page=calendar' query params is true
-    super("calendar", "/");
-
-    this.collapse_button = new CollapseButton()
-
-    $(document).ready(()=>this.load());
-
-  }
-
-  async load()
-  {
-    this.html = $("#main-container").empty()
-
-    //Render the partial into the dom
-    this.collapse_button.render_into(this.html)
-
-  }
-
+    async load() {
+        // Actually render, now that the DOM is ready
+        this.collapse_btn_partial.render_into(this.container_selector);
+    }
 }
 
 module.exports = CalendarPage;
@@ -143,10 +129,11 @@ The Partial class has several methods:
 
 * pre_render(): This method is called before rendering the component and can be overridden to add custom logic.
 * post_render(): This method is called after rendering the component and can be overridden to add custom logic.
-* set_loading(loading): This method takes a boolean argument that specifies whether to show or hide a loading spinner. If loading is true, the method adds a loading spinner to the container element and sets its position to relative. If loading is false, the method removes the loading spinner from the container element and resets its position to unset.
 * render_into(container, data=null): This method takes a container element as its first argument and an optional data object as its second argument. It renders the component into the container element using the PartialsRenderer class and returns the rendered HTML element. It also emits a "rendered" event with the rendered HTML element as the argument.
 * re_render(): This method removes the existing HTML element from its container and renders a new instance of the component into the same container element.
+* create_child(PartialConstructor, css_selector=null, opts={}): This method allows other partials to be added as children of this partial.
 * show(s): This method takes a boolean argument that specifies whether to show or hide the component. If s is true, the method shows the component by setting its display property to "block". If s is false, the method hides the component by setting its display property to "none".
+* for_page(page, opts={}): A static method for constructing this partial as the direct child of a page.
 
 #### collapse_button.html
 ```html
