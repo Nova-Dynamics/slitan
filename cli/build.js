@@ -31,18 +31,19 @@ try {
 const env = new EnvironmentVariables();
 env.load(config.env_files);
 
-// TODO : make this a configurartion option??
+// Create raw CSS bundle
+let css = new CSSify()
 const css_fp = path.join(config.output_folder, "bundle.css");
+css.start(config.entrypoint)
+css.bundle(css_fp)
+console.log(`Bundling CSS: ${f(css_fp, {color: "#c2ae00"})}`)
+
+// Create tailwind css bundle
 if ( config.use.tailwind ) {
+    const bundle_css = fs.readFileSync(css_fp).toString();
     console.log("Staring tailwindcss build ... ");
-    execSync(`${path.resolve(path.join(__dirname, "../node_modules/.bin/tailwindcss"))} -i ./tailwind.css -o ${css_fp}`); 
+    execSync(`${path.resolve(path.join(__dirname, "../node_modules/.bin/tailwindcss"))} -i - -o ${css_fp}${config.minify?" --minify":""}`, { input:bundle_css }); 
     console.log(`Tailwind builded to: ${f(css_fp, {color: "#c2ae00"})}`)
-} else {
-    // Create CSS bundle
-    let css = new CSSify()
-    css.start(config.entrypoint)
-    css.bundle(css_fp)
-    console.log(`Bundling CSS: ${f(css_fp, {color: "#c2ae00"})}`)
 }
 
 // Create the Minify stream
@@ -72,9 +73,10 @@ b.transform(fs_replace);
 b.transform(env.transformer());
 
 // Setup ignores
-if ( !config.use.jquery ) b.ignore("jquery");
 if ( !config.use.bootstrap ) b.ignore("bootstrap");
 if ( !config.use.socketio ) b.ignore("socket.io-client");
+if ( !config.use.entangld ) b.ignore("entangld");
+if ( !config.use.cookies ) b.ignore("js-cookie");
 
 // TODO : make this a configurartion option??
 const bundle_fp = path.join(config.output_folder, "bundle.js");

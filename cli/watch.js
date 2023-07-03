@@ -57,6 +57,7 @@ function rebuild(reason)
       
       if (error) {
           log.error("Build failed to complete!");
+          log.error(error);
       } else {
           log.info("Build finished!");
       }

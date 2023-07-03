@@ -11,10 +11,12 @@ class BuildConfiguration {
         this.env_files = (build?.env_files ?? []).map(fp => resolve(fp)),
         this.minify = !!(build?.minify ?? false);
         this.use = {
-            jquery: !!(build?.use?.jquery ?? true),
             bootstrap: !!(build?.use?.bootstrap ?? false),
+            cookies: !!(build?.use?.cookies ?? true),
             tailwind: !!(build?.use?.tailwind ?? false),
             socketio: !!(build?.use?.socketio ?? false),
+            entangld: !!(build?.use?.entangld ?? false),
+            hashobject: !!(build?.use?.hashobject ?? false),
         };
     }
 
