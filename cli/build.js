@@ -42,7 +42,8 @@ console.log(`Bundling CSS: ${f(css_fp, {color: "#c2ae00"})}`)
 if ( config.use.tailwind ) {
     const bundle_css = fs.readFileSync(css_fp).toString();
     console.log("Staring tailwindcss build ... ");
-    execSync(`${path.resolve(path.join(__dirname, "../node_modules/.bin/tailwindcss"))} -i - -o ${css_fp}${config.minify?" --minify":""}`, { input:bundle_css }); 
+    // execSync(`${path.resolve(path.join(__dirname, "../node_modules/.bin/tailwindcss"))} -i - -o ${css_fp}${config.minify?" --minify":""}`, { input:bundle_css }); 
+    execSync(`npx tailwindcss -i - -o ${css_fp}${config.minify?" --minify":""}`, { input:bundle_css }); 
     console.log(`Tailwind builded to: ${f(css_fp, {color: "#c2ae00"})}`)
 }
 
