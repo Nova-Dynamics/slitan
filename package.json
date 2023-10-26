@@ -37,6 +37,7 @@
     "resolve-from": "^5.0.0",
     "socket.io-client": "^4.6.1",
     "tailwindcss": "^3.3.2",
+    "terser": "^5.22.0",
     "through2": "^4.0.2",
     "yaclc": "^1.0.0",
     "yalls": "^0.5.0"

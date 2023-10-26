@@ -50,7 +50,7 @@ if ( config.use.tailwind ) {
 // Create the Minify stream
 let minifyStream;
 if ( config.minify ) {
-    minifyStream = require("minify-stream")();
+    minifyStream = require("minify-stream")({ uglify:require("terser") });
 } else {
     // Thanks to: https://github.com/GMTurbo/IdentityStream/blob/master/identityStream.js
     class IdentityStream extends Stream {
