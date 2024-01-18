@@ -1,0 +1,11 @@
+body {
+    background-color: #7881ff;
+}
+.collapse-btn {
+    right: 50%;
+    top:50%;
+    position: absolute;
+    font-size: xxx-large;
+    border-radius: 10px;
+    padding: 20px;
+}

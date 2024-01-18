@@ -24,10 +24,17 @@ Install slitan with npm
 
 ```bash
   npm install slitan
-  cd slitan
 ```
     
 ## Usage/Examples
+
+### Basic Example
+
+```bash
+  cd slitan/examples/basic
+  node ../../cli/build.js
+  chrome ./public/index.html
+  ```
 
 ### Entrypoint
 
@@ -76,18 +83,21 @@ The Page class is also designed to be extended by other classes that represent s
 
 ```javascript
 
-const { Page } = require("slitan")
-const CollapseButton = require("./CollapseButton")
+const { Page } = require("../../index.js")
+const CollapseButton = require("./partials/CollapseButton")
 
 //Require page-specific css (will be bundled on build)
-require("./calendar.css")
+require("./home-page.css")
 
-class CalendarPage extends Page
+class HomePage extends Page
 {
+    static page_name = "homepage";
+
     async init() {
         // Construct the button partial
         this.collapse_btn_partial = CollapseButton.for_page(this);
     }
+
 
     async load() {
         // Actually render, now that the DOM is ready
@@ -95,7 +105,7 @@ class CalendarPage extends Page
     }
 }
 
-module.exports = CalendarPage;
+module.exports = HomePage;
 
 ```
 
@@ -135,48 +145,38 @@ The Partial class has several methods:
 * show(s): This method takes a boolean argument that specifies whether to show or hide the component. If s is true, the method shows the component by setting its display property to "block". If s is false, the method hides the component by setting its display property to "none".
 * for_page(page, opts={}): A static method for constructing this partial as the direct child of a page.
 
-#### collapse_button.html
-```html
-<button class="collapse-btn"><img src="svg/{{icon}}.svg"></img></button>
-```
-
-#### collapse_button.css
-```css
-.collapse-btn {
-    border-radius: 50%; 
-    right: -20px;
-    top:10%;
-    position: absolute;
-    border: none;
-    color: var(--font-primary-color);
-    aspect-ratio: 1 / 1;
-    background-color: transparent;
-}
-
-```
 
 #### CollapseButton.js
+
+Below is a basic example of a Partial. Notice that getters can be used to fill out the html template with dynamic data.
+On Post render, the click event is attached to the button to toggle the collapsed state. The partial is then re-rendered and the icon is automatically updated.
+
+
+```html
+<button class="collapse-btn">{{icon}}</button>
+```
+
 ```javascript
-const { Partial } = require("slitan")
+const { Partial } = require("../../../index.js")
 
 //Require partial-specific css (will be bundled on build)
 require("./collapse_button.css")
 
 class CollapseButton extends Partial
 {
-    constructor()
-    {
-        //Require partial-specific html (will be bundled on build)
-        let template = slitan_bundle_resource("./collapse_button.html")
-        
-        super(template)
+
+    static template = slitan_bundle_resource("./collapse_button.html")
+
+    constructor(...args) {
+        super(...args);
 
         this._collapsed = false;
-
     }
+
 
     set collapsed(v)
     {
+        console.log("setting collapsed", v)
         this._collapsed = !!v;
         this.re_render();
     }
@@ -184,12 +184,12 @@ class CollapseButton extends Partial
     // Override the base class post_render
     post_render()
     {
-        this.html.click(()=>this.emit("collapse", !this._collapsed))
+        this.html.click(()=>this.collapsed = !this._collapsed)
     }
 
     get icon()
     {
-        return this._collapsed ? "right-arrow-btn" : "left-arrow-btn"
+        return this._collapsed ? "🙂" : "🙃"
     }
 }
 
