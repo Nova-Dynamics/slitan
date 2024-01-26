@@ -1,6 +1,6 @@
 
 const { existsSync } = require("fs");
-const { resolve } = require("path");
+const { resolve, join } = require("path");
 
 class BuildConfigError extends Error {}
 
@@ -10,6 +10,12 @@ class BuildConfiguration {
         this.output_folder = resolve(build?.output_folder ?? "public");
         this.env_files = (build?.env_files ?? []).map(fp => resolve(fp)),
         this.minify = !!(build?.minify ?? false);
+        this.source_map = !!(build?.source_map ?? true);
+        this.log_level = build?.log_level || "info";
+        this.tailwind = {
+            entrypoint: resolve(build?.tailwind?.entrypoint ?? "tailwind.css"),
+            output: resolve(build?.tailwind?.output ?? join(this.output_folder, "bundle.css")),
+        };
         this.use = {
             bootstrap: !!(build?.use?.bootstrap ?? false),
             cookies: !!(build?.use?.cookies ?? true),

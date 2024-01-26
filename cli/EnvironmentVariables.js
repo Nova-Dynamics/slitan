@@ -15,40 +15,23 @@ class EnvironmentVariables {
         for ( const fp of env_files ) {
             if ( !existsSync(fp) ) continue;
             for ( const [ key, value ] of Object.entries(dotenv.parse(readFileSync(fp))) ) {
-                if ( this.include(key) ) this.env[key] = value; 
+                if ( this.include(key) ) this.env[key] = this.render_value(value); 
             }
         }
         return this;
-    }
-
-    get(key) {
-        return this.env[key];
     }
 
     include(key) {
         return key.startsWith("SLITAN_PUBLIC_");
     }
 
-    transformer() {
-        const self = this;
-        return function(file, options) {
-            const stream = through(write, end);
-            return stream;
+    render_value(value) {
+        // Needs this to properly escape strings
+        return JSON.stringify(value);
+    }
 
-            function write(buffer, encoding, next) {
-                this.push(buffer.toString().replace(
-                    /process.env.(SLITAN_PUBLIC_\w+)/g,
-                    function(match, env_key) {
-                        const value = self.get(env_key);
-                        if ( value == undefined ) return undefined;
-                        return `"${value}"`;
-                    }
-                ));
-                next();
-            }
-
-            function end(done) { done(); }
-        }
+    get() {
+        return this.env;
     }
 }
 
