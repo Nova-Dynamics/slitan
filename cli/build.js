@@ -36,7 +36,6 @@ const { f } = require("yaclc");
     if ( config.use.tailwind ) {
         const bundle_css = fs.readFileSync(config.tailwind.entrypoint).toString();
         console.log("Staring tailwindcss build ... ");
-        // execSync(`npx tailwindcss -i - -o ${config.tailwind.output}${config.minify?" --minify":""}`, { input:bundle_css }); 
         execSync(`npx tailwindcss -i - -o ${config.tailwind.output}`, { input:bundle_css }); 
         console.log(`Tailwind bundled to: ${f(config.tailwind.output, {color: "#c2ae00"})}`)
     }
@@ -128,11 +127,4 @@ const { f } = require("yaclc");
     }
 
     console.log(`${f("Build complete.", {color: "green"})}`);
-
-    // // Setup ignores
-    // if ( !config.use.bootstrap ) b.ignore("bootstrap");
-    // if ( !config.use.socketio ) b.ignore("socket.io-client");
-    // if ( !config.use.entangld ) b.ignore("entangld");
-    // if ( !config.use.cookies ) b.ignore("js-cookie");
-
 }();
