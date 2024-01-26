@@ -30,6 +30,7 @@
     "dotenv": "^16.1.0",
     "entangld": "^2.4.0",
     "esbuild": "^0.19.12",
+    "events": "^3.3.0",
     "jquery": "^3.6.4",
     "js-cookie": "^3.0.1",
     "mustache": "^4.2.0",

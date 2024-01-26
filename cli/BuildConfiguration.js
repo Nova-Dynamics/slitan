@@ -14,15 +14,15 @@ class BuildConfiguration {
         this.log_level = build?.log_level || "info";
         this.tailwind = {
             entrypoint: resolve(build?.tailwind?.entrypoint ?? "tailwind.css"),
-            output: resolve(build?.tailwind?.output ?? join(this.output_folder, "bundle.css")),
+            output: resolve(build?.tailwind?.output ?? join(this.output_folder, "bundle.tailwind.css")),
         };
         this.use = {
-            bootstrap: !!(build?.use?.bootstrap ?? false),
-            cookies: !!(build?.use?.cookies ?? true),
+            cookies: !!(build?.use?.cookies ?? false),
             tailwind: !!(build?.use?.tailwind ?? false),
             socketio: !!(build?.use?.socketio ?? false),
             entangld: !!(build?.use?.entangld ?? false),
             hashobject: !!(build?.use?.hashobject ?? false),
+            request: !!(build?.use?.request ?? false),
         };
     }
 

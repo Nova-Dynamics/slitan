@@ -41,6 +41,63 @@ const { f } = require("yaclc");
         console.log(`Tailwind bundled to: ${f(config.tailwind.output, {color: "#c2ae00"})}`)
     }
 
+    const plugins = [];
+    if ( !config.use.socketio ) plugins.push({
+        name: "socket.io-client Resolver",
+        setup(build) {
+            // Redirect all socket.io imports to the slimed version
+            build.onResolve({ filter:/plugins\/socket\.io-client\.js/ }, args => {
+                return {
+                    path: path.resolve(path.join(__dirname,"../lib/shims/socket.io-client.js"))
+                }
+            })
+        }
+    })
+    if ( !config.use.entangld ) plugins.push({
+        name: "Entangld Resolver",
+        setup(build) {
+            // Redirect all socket.io imports to the slimed version
+            build.onResolve({ filter:/plugins\/entangld\.js/ }, args => {
+                return {
+                    path: path.resolve(path.join(__dirname,"../lib/shims/entangld.js"))
+                }
+            })
+        }
+    })
+    if ( !config.use.hashobject ) plugins.push({
+        name: "HashObject Resolver",
+        setup(build) {
+            // Redirect all socket.io imports to the slimed version
+            build.onResolve({ filter:/plugins\/hash-object\.js/ }, args => {
+                return {
+                    path: path.resolve(path.join(__dirname,"../lib/shims/empty.js"))
+                }
+            })
+        }
+    })
+    if ( !config.use.request ) plugins.push({
+        name: "Request Resolver",
+        setup(build) {
+            // Redirect all socket.io imports to the slimed version
+            build.onResolve({ filter:/plugins\/request\.js/ }, args => {
+                return {
+                    path: path.resolve(path.join(__dirname,"../lib/shims/empty.js"))
+                }
+            })
+        }
+    })
+    if ( !config.use.cookies ) plugins.push({
+        name: "JS-Cookies Resolver",
+        setup(build) {
+            // Redirect all socket.io imports to the slimed version
+            build.onResolve({ filter:/plugins\/js-cookie\.js/ }, args => {
+                return {
+                    path: path.resolve(path.join(__dirname,"../lib/shims/empty.js"))
+                }
+            })
+        }
+    })
+
 
     // Render out the js bundle
     const bundle_fp = path.join(config.output_folder, "bundle.js");
@@ -62,6 +119,7 @@ const { f } = require("yaclc");
             define: {
                 ...env.get() 
             },
+            plugins
         }); 
     } catch (e) {
         console.log(`${f("Build bundling failed.", {color: "red"})}`);
