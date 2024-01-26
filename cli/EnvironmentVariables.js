@@ -1,7 +1,6 @@
 
 const { readFileSync, existsSync } = require("fs");
 const dotenv = require("dotenv");
-const through = require('through2');
 
 class EnvironmentVariables {
     constructor() {
