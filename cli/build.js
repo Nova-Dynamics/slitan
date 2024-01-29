@@ -116,7 +116,7 @@ const { f } = require("yaclc");
                 ".html": "text",
             },
             define: {
-                ...env.get() 
+                "process.env": env.toJSON(),
             },
             plugins
         }); 
