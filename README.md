@@ -4,7 +4,7 @@
 Slitan is a web UI framework that provides a convenient way to build and manage UI components. It comes with a set of default components and tools for building custom components.
 
 
-![Logo](https://lh3.googleusercontent.com/u/0/drive-viewer/AAOQEOTdWtlX8mxTEs04lwUgH9sZnFJT3_H5L7elplKVWMBra8r3oemZuGRVd94zYuO6Y8-Haz3zu5716bXV0qU3hxr8a7QeLg=w1920-h880)
+![Logo](./assests/logo.png)
 
 
 ## Authors
