@@ -14,7 +14,7 @@ class EnvironmentVariables {
         for ( const fp of env_files ) {
             if ( !existsSync(fp) ) continue;
             for ( const [ key, value ] of Object.entries(dotenv.parse(readFileSync(fp))) ) {
-                if ( this.include(key) ) this.env[key] = this.render_value(value); 
+                if ( this.include(key) ) this.env[this.slice(key)] = value; 
             }
         }
         return this;
@@ -24,13 +24,12 @@ class EnvironmentVariables {
         return key.startsWith("SLITAN_PUBLIC_");
     }
 
-    render_value(value) {
-        // Needs this to properly escape strings
-        return JSON.stringify(value);
+    slice(key) {
+        return key.slice(14);
     }
 
-    get() {
-        return this.env;
+    toJSON() {
+        return JSON.stringify(this.env);
     }
 }
 

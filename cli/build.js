@@ -69,7 +69,7 @@ const { f } = require("yaclc");
             // Redirect all socket.io imports to the slimed version
             build.onResolve({ filter:/plugins\/hash-object\.js/ }, args => {
                 return {
-                    path: path.resolve(path.join(__dirname,"../lib/shims/empty.js"))
+                    path: path.resolve(path.join(__dirname,"../lib/shims/hash-object.js"))
                 }
             })
         }
@@ -116,7 +116,7 @@ const { f } = require("yaclc");
                 ".html": "text",
             },
             define: {
-                ...env.get() 
+                "process.env": env.toJSON(),
             },
             plugins
         }); 
