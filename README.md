@@ -196,3 +196,19 @@ class CollapseButton extends Partial
 
 module.exports = CollapseButton
 ```
+
+
+## Version 3.x
+### New Features
+- HashObject plugin
+- Bundling of source maps by defaults (disable in `slitan.config.js` via the `source_map` flag)
+### Migrating from 2.x to 3.x
+- All occurrences of `slitan_bundle_resource(...)` should be replaced with `require(...)`
+- All occurrences of `process.env.SLITAN_PUBLIC_<rest-of-name>` should be replaced with `process.env.<rest-of-name>`
+- Browserify's auto-polyfilling of nodejs core libraries has been removed, you can add back in the subset which you need. E.g. `npm install path-browserify`
+- Tailwind support has be reordered to utilitize esbuild's css minification (rather than minifying the css twice), which means that apps should `require`
+   the tailwind-bundled css file, rather than the tailwind css entrypoint file. Usually this means if you have a `require("./tailwind.css")` in your js entrypoint,
+   you will need to change this to a `require("./public/bundle.tailwind.css")`.
+- The `request` plugin has been moved to the Entrypoint object, and disabled by default (enabled with `slitan.config.js` flag `use.request`. So, all occurrences of `window.request`
+   should be replaced with `app.request`
+
