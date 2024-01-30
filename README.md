@@ -31,10 +31,10 @@ Install slitan with npm
 ### Basic Example
 
 ```bash
-  cd slitan/examples/basic
-  node ../../cli/build.js
-  chrome ./public/index.html
-  ```
+cd slitan/examples/basic
+node ../../cli/build.js
+chrome ./public/index.html
+```
 
 ### Entrypoint
 
@@ -159,13 +159,14 @@ On Post render, the click event is attached to the button to toggle the collapse
 ```javascript
 const { Partial } = require("../../../index.js")
 
-//Require partial-specific css (will be bundled on build)
+// Require partial-specific css (will be bundled on build)
 require("./collapse_button.css")
 
 class CollapseButton extends Partial
 {
 
-    static template = slitan_bundle_resource("./collapse_button.html")
+    // Require partial-specific html (will be bundled on build)
+    static template = require("./collapse_button.html")
 
     constructor(...args) {
         super(...args);

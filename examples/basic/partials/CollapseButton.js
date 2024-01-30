@@ -6,7 +6,7 @@ require("./collapse_button.css")
 class CollapseButton extends Partial
 {
 
-    static template = slitan_bundle_resource("./collapse_button.html")
+    static template = require("./collapse_button.html");
 
     constructor(...args) {
         super(...args);
