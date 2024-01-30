@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/novadynamics/slitan.git"
+    "url": "git+ssh://git@github.com:Nova-Dynamics/slitan.git"
   },
   "author": "Sean Sullivan",
   "license": "ISC",
   "bugs": {
-    "url": "https://bitbucket.org/novadynamics/slitan/issues"
+    "url": "https://github.com/Nova-Dynamics/slitan/issues"
   },
-  "homepage": "https://bitbucket.org/novadynamics/slitan#readme",
+  "homepage": "https://github.com/Nova-Dynamics/slitan",
   "dependencies": {
     "browserify": "^17.0.0",
     "chokidar": "^3.5.3",
