@@ -6,9 +6,6 @@
   "directories": {
     "lib": "lib"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "bin": {
     "slitan-init": "./cli/init.js",
     "slitan-build": "./cli/build.js",
@@ -16,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/novadynamics/slitan.git"
+    "url": "git+ssh://git@github.com:Nova-Dynamics/slitan.git"
   },
   "author": "Sean Sullivan",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
-    "url": "https://bitbucket.org/novadynamics/slitan/issues"
+    "url": "https://github.com/Nova-Dynamics/slitan/issues"
   },
-  "homepage": "https://bitbucket.org/novadynamics/slitan#readme",
+  "homepage": "https://github.com/Nova-Dynamics/slitan",
   "dependencies": {
     "chokidar": "^3.5.3",
     "commander": "^10.0.1",
