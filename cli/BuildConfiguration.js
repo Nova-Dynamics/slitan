@@ -11,6 +11,7 @@ class BuildConfiguration {
         this.env_files = (build?.env_files ?? []).map(fp => resolve(fp)),
         this.minify = !!(build?.minify ?? false);
         this.source_map = !!(build?.source_map ?? true);
+        this.external_packages = build.external_packages || [];
         this.log_level = build?.log_level || "info";
         this.tailwind = {
             entrypoint: resolve(build?.tailwind?.entrypoint ?? "tailwind.css"),

@@ -118,6 +118,7 @@ const { f } = require("yaclc");
             define: {
                 "process.env": env.toJSON(),
             },
+            external: config.external_packages,
             plugins
         }); 
     } catch (e) {
